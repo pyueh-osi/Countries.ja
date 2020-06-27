@@ -1,0 +1,9 @@
+---
+- name: 記事
+  href: articles/
+- name: API ドキュメント
+  href: api/
+  homepage: api/index.md
+- name: 別の API ドキュメント
+  href: api-vb/
+  homepage: api-vb/index.md

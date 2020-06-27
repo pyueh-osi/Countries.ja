@@ -1,0 +1,20 @@
+- name: Introduction
+  href: intro.md
+
+# - name: Europe
+#   href: europe.md
+
+- name: Europe
+  href: europe/toc.yml
+
+# For North America, we have all items from here
+- name: North America
+  items:
+  - name: Canada
+    href: north_america/canada.md
+  - name: Mexico
+    href: north_america/mexico.md
+  - name: United States
+    href: north_america/united_states.md
+
+  

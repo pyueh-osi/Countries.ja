@@ -1,0 +1,8 @@
+# This toc.yml specifies the content that goes into the PDF
+
+- name: Articles
+  href: ../articles/toc.yml
+- name: Api Documentation
+  href: ../api/toc.yml
+- name: Another Api Documentation
+  href: ../api-vb/toc.yml
