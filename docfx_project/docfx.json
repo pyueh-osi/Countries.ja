@@ -78,6 +78,7 @@
     "disableGitFeatures": false
   },
   "pdf": {
+    "noStdin": true,
     "content": [
       {
         "files": [
