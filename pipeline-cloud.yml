@@ -13,7 +13,7 @@ variables:
   - name: gitOwner
     value: pyueh-osi
   - name: contentLanguage
-    value: de
+    value: ja
 
 jobs:
   - job: Publish
@@ -64,7 +64,7 @@ jobs:
       - powershell: |
 
             Write-Output "env:Build_SourcesDirectory = $env:Build_SourcesDirectory"
-            Write-Output "gitRepoName = $envgitRepoName"
+            Write-Output "gitRepoName = $env:gitRepoName"
                     
 ##          set-variable -name "src_dir" -value "$env:Build_SourcesDirectory\$gitRepoName"
 ##          set-variable -name "build_info_file" -value "$src_dir\docfx_project\_site\BuildInfo.txt"
@@ -98,7 +98,7 @@ jobs:
           azureSubscription: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
           scriptType: 'ps'
           scriptLocation: 'inlineScript'
-          inlineScript: 'az storage blob delete-batch --source "`$web" --account-name "petersandbox1" --pattern "$(contentLanguage)/$(gitRepoName)/*"'
+          inlineScript: 'az storage blob delete-batch --source "`$web" --account-name "petersandbox1" --pattern "de/Countries/*"'
 
       - task: AzureFileCopy@4
         displayName: 'Deploy to web server'
