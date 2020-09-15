@@ -79,6 +79,8 @@
   },
   "pdf": {
     "noStdin": true,
+    "name": "Countries.ja",
+    "keepRawFiles": true,
     "content": [
       {
         "files": [
@@ -137,7 +139,8 @@
     "dest": "_site_pdf",
     "template": [
       "pdf.default",
-      "templates/pdf"
+      "templates/pdf",
+      "templates/mypdf"
     ]
 
   }

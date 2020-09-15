@@ -19,6 +19,6 @@ docfx pdf docfx.json
 
 # Copy our pdf to the _site and rename
 
-copy .\_site_pdf\docfx_project_pdf.pdf .\_site\Countries.ja.pdf
+copy .\_site_pdf\Countries.ja_pdf.pdf .\_site
 
 
