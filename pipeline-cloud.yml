@@ -61,8 +61,11 @@ jobs:
         workingDirectory: 'C:\'
         displayName: 'Publish DocFX'
 
-##      - powershell: |
-##        
+      - powershell: |
+
+            Write-Output "env:Build_SourcesDirectory = $env:Build_SourcesDirectory"
+            Write-Output "gitRepoName = $gitRepoName"
+                    
 ##          set-variable -name "src_dir" -value "$env:Build_SourcesDirectory\$gitRepoName"
 ##          set-variable -name "build_info_file" -value "$src_dir\docfx_project\_site\BuildInfo.txt"
 ##          new-item -path $build_info_file -itemtype file
@@ -80,7 +83,7 @@ jobs:
 ##          add-content -path $build_info_file -value "- Requested For : $env:Build_RequestedFor"
 ##          add-content -path $build_info_file -value "- Queued By     : $env:Build_QueuedBy"
 ##
-##        displayName: 'Write BuildInfo.txt file'
+        displayName: 'Write BuildInfo.txt file'
 
 
       - task: PublishBuildArtifacts@1
@@ -106,4 +109,4 @@ jobs:
           Destination: 'AzureBlob'
           storage: 'petersandbox1'
           ContainerName: '$web'
-          BlobPrefix: '$(contentLanguage)/$(gitRepoName)'
+          BlobPrefix: '$(contentLanguage)/Countries'
