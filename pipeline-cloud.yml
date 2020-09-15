@@ -61,26 +61,26 @@ jobs:
         workingDirectory: 'C:\'
         displayName: 'Publish DocFX'
 
-      - powershell: |
-        
-          set-variable -name "src_dir" -value "$env:Build_SourcesDirectory\$gitRepoName"
-          set-variable -name "build_info_file" -value "$src_dir\docfx_project\_site\BuildInfo.txt"
-          new-item -path $build_info_file -itemtype file
-          
-          add-content -path $build_info_file -value "Build Time      : $build_timestamp"
-          add-content -path $build_info_file -value "Source Repo     : $env:Build_Repository_Uri"
-          add-content -path $build_info_file -value "Branch          : $env:Build_SourceBranchName"
-          add-content -path $build_info_file -value "Last Commit     : $env:Build_SourceVersion"
-          add-content -path $build_info_file -value ""
-          add-content -path $build_info_file -value "Other Build Info:"
-          add-content -path $build_info_file -value "- Agent         : $env:Agent_MachineName"
-          add-content -path $build_info_file -value "- Name          : $env:Build_DefinitionName"
-          add-content -path $build_info_file -value "- Number        : $env:Build_BuildNumber"
-          add-content -path $build_info_file -value "- Reason        : $env:Build_Reason"
-          add-content -path $build_info_file -value "- Requested For : $env:Build_RequestedFor"
-          add-content -path $build_info_file -value "- Queued By     : $env:Build_QueuedBy"
-
-        displayName: 'Write BuildInfo.txt file'
+##      - powershell: |
+##        
+##          set-variable -name "src_dir" -value "$env:Build_SourcesDirectory\$gitRepoName"
+##          set-variable -name "build_info_file" -value "$src_dir\docfx_project\_site\BuildInfo.txt"
+##          new-item -path $build_info_file -itemtype file
+##          
+##          add-content -path $build_info_file -value "Build Time      : $build_timestamp"
+##          add-content -path $build_info_file -value "Source Repo     : $env:Build_Repository_Uri"
+##          add-content -path $build_info_file -value "Branch          : $env:Build_SourceBranchName"
+##          add-content -path $build_info_file -value "Last Commit     : $env:Build_SourceVersion"
+##          add-content -path $build_info_file -value ""
+##          add-content -path $build_info_file -value "Other Build Info:"
+##          add-content -path $build_info_file -value "- Agent         : $env:Agent_MachineName"
+##          add-content -path $build_info_file -value "- Name          : $env:Build_DefinitionName"
+##          add-content -path $build_info_file -value "- Number        : $env:Build_BuildNumber"
+##          add-content -path $build_info_file -value "- Reason        : $env:Build_Reason"
+##          add-content -path $build_info_file -value "- Requested For : $env:Build_RequestedFor"
+##          add-content -path $build_info_file -value "- Queued By     : $env:Build_QueuedBy"
+##
+##        displayName: 'Write BuildInfo.txt file'
 
 
       - task: PublishBuildArtifacts@1
