@@ -63,8 +63,8 @@ jobs:
 
       - powershell: |
         
-          set-variable -name "src_dir" -value "$env:Build_SourcesDirectory"
-          set-variable -name "build_info_file" -value "$src_dir\_site\BuildInfo.txt"
+          set-variable -name "src_dir" -value "$env:Build_SourcesDirectory\$gitRepoName"
+          set-variable -name "build_info_file" -value "$src_dir\docfx_project\_site\BuildInfo.txt"
           new-item -path $build_info_file -itemtype file
           
           add-content -path $build_info_file -value "Build Time      : $build_timestamp"
