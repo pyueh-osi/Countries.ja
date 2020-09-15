@@ -64,7 +64,7 @@ jobs:
       - powershell: |
 
             Write-Output "env:Build_SourcesDirectory = $env:Build_SourcesDirectory"
-            Write-Output "gitRepoName = $gitRepoName"
+            Write-Output "gitRepoName = $envgitRepoName"
                     
 ##          set-variable -name "src_dir" -value "$env:Build_SourcesDirectory\$gitRepoName"
 ##          set-variable -name "build_info_file" -value "$src_dir\docfx_project\_site\BuildInfo.txt"
@@ -109,4 +109,4 @@ jobs:
           Destination: 'AzureBlob'
           storage: 'petersandbox1'
           ContainerName: '$web'
-          BlobPrefix: '$(contentLanguage)/Countries'
+          BlobPrefix: 'ja/Countries'
