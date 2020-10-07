@@ -8,9 +8,9 @@ div.expandable > input {
 }
 
 div.expandable > label {
-    display: block; 
-    font-weight: normal;   
-    /*
+    display: block;
+    font-weight: normal;
+    /*    
     padding: 8px 22px;
     margin: 0 0 1px 0;
     cursor: pointer;
@@ -22,23 +22,11 @@ div.expandable > label {
     */
 }
 
-div.expandable > label:hover {
-    cursor: pointer;
-    /*
-    background: #4E8774;
-    */
-}
+/* For PDF, arrow is always expanded */
 
 div.expandable > label::before {
-    content: '► ';
-    font-family: sans-serif;
-    font-size: smaller;
-}
-
-div.expandable > input:checked + label::before {
     content: '▼ ';
     font-family: sans-serif;
-    font-size: smaller;
 }
 
 
@@ -52,10 +40,9 @@ div.expandable > .content {
     */
 }
 
-div.expandable > input + label + .content {
-    display: none;
-}
+/* For PDF, content is always displayed */
 
-div.expandable > input:checked + label + .content {
+div.expandable > input + label + .content {
     display: block;
 }
+
