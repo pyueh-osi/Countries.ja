@@ -13,7 +13,7 @@ parameters:
   type: boolean
   default: true
 
-steps:
+stages:
   - ${{ if eq(parameters.buildForAzure, true) }}:
     - template: pipeline-azure.yml
   - ${{ if not(eq(parameters.buildForAzure, true)) }}:
