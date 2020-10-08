@@ -19,4 +19,4 @@ jobs:
   - ${{ if not(eq(parameters.buildForAzure, true)) }}:
     - template: pipeline-clguild01.yml
       parameters:
-        branchName: abc
+        branchName: 'abc'
