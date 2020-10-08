@@ -20,11 +20,12 @@ jobs:
     steps:
       - script: |
           echo "Executing pipeline-clguild01"
-          echo "env:Build_SourcesDirectory = $(Build_SourcesDirectory)"
+          echo "env:Build_SourcesDirectory = %Build_SourcesDirectory%"
           echo "env:Build_SourceBranchName = $(Build_SourceBranchName)"
           echo "branchName = ${{parameters.branchName}}"
           echo "branchName2 = ${{parameters.branchName2}}"
           echo "gitRepoName = ${{variables.gitRepoName}}"
+          echo "gitRepoName = $(gitRepoName)"
 
           git clone -b ${{parameters.branchName}} https://user:$(gitToken)@github.com/$({{variables.gitOwner}})/$({{variables.gitRepoName}}).git --recurse-submodules
 
