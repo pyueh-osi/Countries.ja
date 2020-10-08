@@ -23,9 +23,25 @@ jobs:
             Write-Output "env:Build_SourceBranchName = $env:Build_SourceBranchName"
             Write-Output "env:gitRepoName = $env:gitRepoName"
             Write-Output "branchName = ${{parameters.branchName}}"
-            Write-Output "branchName = ${{parameters.branchName2}}"
+            Write-Output "branchName2 = ${{parameters.branchName2}}"
+            Write-Output "gitRepoName = ${{variables.gitRepoName}}"
 
-                    
+            git clone -b ${{parameters.branchName}} https://user:$(gitToken)@github.com/${{variables.gitOwner}}/${{gitRepoName}}.git --recurse-submodules
+            cd ${{variables.gitRepoName}}
+            cd docfx_project
+
+            docfx.exe build .\docfx.json
+
+            docfx.exe pdf .\docfx.json
+            copy .\_site_pdf\*.pdf .\_site
+
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$env:Build_SourcesDirectory\$(gitRepoName)\docfx_project\_site'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
+
+
 ##          set-variable -name "src_dir" -value "$env:Build_SourcesDirectory\$gitRepoName"
 ##          set-variable -name "build_info_file" -value "$src_dir\docfx_project\_site\BuildInfo.txt"
 ##          new-item -path $build_info_file -itemtype file
