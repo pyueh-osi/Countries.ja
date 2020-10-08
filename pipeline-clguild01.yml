@@ -16,7 +16,19 @@ jobs:
       # name: 00-OSIManaged-Containers
       # demands: AgentType -equals osimanagedagent
       vmImage: 'vs2017-win2016'
+
     steps:
+      - script: |
+          echo "Executing pipeline-clguild01"
+          echo "env:Build_SourcesDirectory = $(Build_SourcesDirectory)"
+          echo "env:Build_SourceBranchName = $(Build_SourceBranchName)"
+          echo "branchName = ${{parameters.branchName}}"
+          echo "branchName2 = ${{parameters.branchName2}}"
+          echo "gitRepoName = ${{variables.gitRepoName}}"
+
+          git clone -b ${{parameters.branchName}} https://user:$(gitToken)@github.com/$({{variables.gitOwner}})/$({{variables.gitRepoName}}).git --recurse-submodules
+
+
       - powershell: |
             Write-Output "Executing pipeline-clguild01"
             Write-Output "env:Build_SourcesDirectory = $env:Build_SourcesDirectory"
@@ -24,9 +36,9 @@ jobs:
             Write-Output "branchName = ${{parameters.branchName}}"
             Write-Output "branchName2 = ${{parameters.branchName2}}"
             Write-Output "gitRepoName = ${{variables.gitRepoName}}"
-            Write-Output "env:gitToken = $env:gitToken"
+            Write-Output "gitToken = ${{variables.gitToken}}"
 
-            git clone -b ${{parameters.branchName}} https://user:$(env:gitToken)@github.com/${{variables.gitOwner}}/${{variables.gitRepoName}}.git --recurse-submodules
+            git clone -b ${{parameters.branchName}} https://user:${{variables.gitToken}}@github.com/${{variables.gitOwner}}/${{variables.gitRepoName}}.git --recurse-submodules
             cd ${{variables.gitRepoName}}
             cd docfx_project
 
