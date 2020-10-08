@@ -24,8 +24,9 @@ jobs:
             Write-Output "branchName = ${{parameters.branchName}}"
             Write-Output "branchName2 = ${{parameters.branchName2}}"
             Write-Output "gitRepoName = ${{variables.gitRepoName}}"
+            Write-Output "env:gitToken = $env:gitToken"
 
-            git clone -b ${{parameters.branchName}} https://user:$(gitToken)@github.com/${{variables.gitOwner}}/${{variables.gitRepoName}}.git --recurse-submodules
+            git clone -b ${{parameters.branchName}} https://user:$(env:gitToken)@github.com/${{variables.gitOwner}}/${{variables.gitRepoName}}.git --recurse-submodules
             cd ${{variables.gitRepoName}}
             cd docfx_project
 
