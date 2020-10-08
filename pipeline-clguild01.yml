@@ -1,19 +1,5 @@
 # DevOps pipeline for CLGuild01 deployment
 
-trigger: none
-#  batch: false
-#  branches:
-#    include:
-#      - master
-
-variables:
-  - group: product-readiness.docfx
-  - name: gitRepoName
-    value: Countries.ja
-  - name: gitOwner
-    value: pyueh-osi
-  - name: contentLanguage
-    value: ja
 
 jobs:
   - job: Publish
