@@ -21,12 +21,11 @@ jobs:
             Write-Output "Executing pipeline-clguild01"
             Write-Output "env:Build_SourcesDirectory = $env:Build_SourcesDirectory"
             Write-Output "env:Build_SourceBranchName = $env:Build_SourceBranchName"
-            Write-Output "env:gitRepoName = $env:gitRepoName"
             Write-Output "branchName = ${{parameters.branchName}}"
             Write-Output "branchName2 = ${{parameters.branchName2}}"
             Write-Output "gitRepoName = ${{variables.gitRepoName}}"
 
-            git clone -b ${{parameters.branchName}} https://user:$(gitToken)@github.com/${{variables.gitOwner}}/${{gitRepoName}}.git --recurse-submodules
+            git clone -b ${{parameters.branchName}} https://user:$(gitToken)@github.com/${{variables.gitOwner}}/${{variables.gitRepoName}}.git --recurse-submodules
             cd ${{variables.gitRepoName}}
             cd docfx_project
 
