@@ -1,6 +1,6 @@
 # DevOps pipeline for Azure cloud deployment
 
-trigger: none
+# trigger: none
 #  batch: false
 #  branches:
 #    include:
