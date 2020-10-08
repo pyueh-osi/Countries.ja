@@ -14,6 +14,7 @@ parameters:
   default: true
 
 variables:
+  - group: product-readiness.docfx
   - name: gitRepoName
     value: Countries.ja
   - name: gitOwner
