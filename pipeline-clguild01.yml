@@ -3,7 +3,11 @@
 parameters:
 - name: branchName
   displayName: 'Branch to build/deploy'
-  type: boolean
+  type: string
+  default: 'master'
+- name: branchName2
+  displayName: 'Branch to build/deploy 2'
+  type: string
   default: 'master'
 
 jobs:
