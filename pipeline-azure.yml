@@ -1,4 +1,4 @@
-# DevOps pipeline for CLGuild01 deployment
+# DevOps pipeline for Azure cloud deployment
 
 trigger: none
 #  batch: false
@@ -23,11 +23,11 @@ jobs:
       vmImage: 'vs2017-win2016'
     steps:
       - powershell: |
-            Write-Output "Executing pipeline-clguild01"
+            Write-Output "Executing pipeline-azure"
             Write-Output "env:Build_SourcesDirectory = $env:Build_SourcesDirectory"
             Write-Output "env:Build_SourceBranchName = $env:Build_SourceBranchName"
             Write-Output "env:gitRepoName = $env:gitRepoName"
-                    
+
 ##          set-variable -name "src_dir" -value "$env:Build_SourcesDirectory\$gitRepoName"
 ##          set-variable -name "build_info_file" -value "$src_dir\docfx_project\_site\BuildInfo.txt"
 ##          new-item -path $build_info_file -itemtype file
@@ -45,7 +45,3 @@ jobs:
 ##          add-content -path $build_info_file -value "- Requested For : $env:Build_RequestedFor"
 ##          add-content -path $build_info_file -value "- Queued By     : $env:Build_QueuedBy"
 ##
-        displayName: 'Write BuildInfo.txt file'
-
-
-
