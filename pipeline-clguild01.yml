@@ -22,7 +22,6 @@ jobs:
             Write-Output "env:Build_SourcesDirectory = $env:Build_SourcesDirectory"
             Write-Output "env:Build_SourceBranchName = $env:Build_SourceBranchName"
             Write-Output "env:gitRepoName = $env:gitRepoName"
-            Write-Output "branchName = ${{branchName}}"
             Write-Output "branchName = ${{parameters.branchName}}"
             Write-Output "branchName = ${{parameters.branchName2}}"
 
