@@ -1,5 +1,10 @@
 # DevOps pipeline for CLGuild01 deployment
 
+parameters:
+- name: branchName
+  displayName: 'Branch to build/deploy'
+  type: boolean
+  default: 'master'
 
 jobs:
   - job: Publish
@@ -13,6 +18,7 @@ jobs:
             Write-Output "env:Build_SourcesDirectory = $env:Build_SourcesDirectory"
             Write-Output "env:Build_SourceBranchName = $env:Build_SourceBranchName"
             Write-Output "env:gitRepoName = $env:gitRepoName"
+            Write-Output "branchName = $branchName"
                     
 ##          set-variable -name "src_dir" -value "$env:Build_SourcesDirectory\$gitRepoName"
 ##          set-variable -name "build_info_file" -value "$src_dir\docfx_project\_site\BuildInfo.txt"
