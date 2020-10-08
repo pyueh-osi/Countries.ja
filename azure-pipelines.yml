@@ -13,6 +13,12 @@ parameters:
   type: boolean
   default: true
 
+variables:
+  - name: gitRepoName
+    value: Countries.ja
+  - name: gitOwner
+    value: pyueh-osi
+
 jobs:
   - ${{ if eq(parameters.buildForAzure, true) }}:
     - template: pipeline-azure.yml
