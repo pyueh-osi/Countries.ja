@@ -35,8 +35,18 @@ jobs:
             Write-Output "env:Build_SourceBranchName = $env:Build_SourceBranchName"
             Write-Output "branchName = ${{parameters.branchName}}"
             Write-Output "branchName2 = ${{parameters.branchName2}}"
-            Write-Output "gitRepoName = $env:gitRepoName"
+            Write-Output "gitRepoName = ($env:gitRepoName)"
+            Write-Output "gitToken = ($env:gitToken)"
+            Write-Output "gitOwner = ($env:gitOwner)"
 
+            git clone -b ${{parameters.branchName}} https://user:($env:gitToken)@github.com/($env:gitOwner)/($env:gitRepoName).git --recurse-submodules
+            # cd $env:gitRepoName
+            cd docfx_project
+
+            docfx.exe build .\docfx.json
+
+            docfx.exe pdf .\docfx.json
+            copy .\_site_pdf\*.pdf .\_site
 
 ##          set-variable -name "src_dir" -value "$env:Build_SourcesDirectory\$gitRepoName"
 ##          set-variable -name "build_info_file" -value "$src_dir\docfx_project\_site\BuildInfo.txt"
