@@ -45,6 +45,8 @@ jobs:
             cd $env:gitRepoName
             cd docfx_project
 
+            docfx.exe metadata .\docfx.json
+
             docfx.exe build .\docfx.json
 
             docfx.exe pdf .\docfx.json
@@ -52,6 +54,12 @@ jobs:
             copy .\_site_pdf\*.pdf .\_site
 
         displayName: 'Build DocFx site'
+
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$env:Build_SourcesDirectory\$env:gitRepoName\docfx_project\_site'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
 
 ##      - powershell: |
 ##          set-variable -name "src_dir" -value "$env:Build_SourcesDirectory\$gitRepoName"
