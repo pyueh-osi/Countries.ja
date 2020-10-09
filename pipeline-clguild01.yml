@@ -35,8 +35,6 @@ jobs:
             Write-Output "env:Build_SourceBranchName = $env:Build_SourceBranchName"
             Write-Output "branchName = ${{parameters.branchName}}"
             Write-Output "branchName2 = ${{parameters.branchName2}}"
-##  This passed parser, but result is blank
-##          Write-Output "gitRepoName = ${{variables.gitRepoName}}"
             Write-Output "gitRepoName = $env:gitRepoName"
 
 
