@@ -19,6 +19,14 @@ jobs:
 
     steps:
       - script: |
+          choco install DocFX --version=2.56.2
+        displayName: 'Install DocFX 2.56.2'
+
+      - script: |
+          choco install wkhtmltopdf --version=0.12.5
+        displayName: 'Install wkhtmltopdf 0.12.5'
+
+      - script: |
           echo "Executing pipeline-clguild01"
           echo "env:Build_SourcesDirectory = %Build_SourcesDirectory%"
           echo "env:Build_SourceBranchName = %Build_SourceBranchName%"
@@ -26,7 +34,7 @@ jobs:
           echo "branchName2 = ${{parameters.branchName2}}"
           echo "gitRepoName = $(gitRepoName)"
 
-          git clone -b ${{parameters.branchName}} https://user:$(gitToken)@github.com/$(gitOwner)/$(gitRepoName).git --recurse-submodules
+          # git clone -b ${{parameters.branchName}} https://user:$(gitToken)@github.com/$(gitOwner)/$(gitRepoName).git --recurse-submodules
 
 
       - powershell: |
@@ -35,19 +43,23 @@ jobs:
             Write-Output "env:Build_SourceBranchName = $env:Build_SourceBranchName"
             Write-Output "branchName = ${{parameters.branchName}}"
             Write-Output "branchName2 = ${{parameters.branchName2}}"
-            Write-Output "gitRepoName = ($env:gitRepoName)"
-            Write-Output "gitToken = ($env:gitToken)"
-            Write-Output "gitOwner = ($env:gitOwner)"
+            Write-Output "gitRepoName = $env:gitRepoName"
+            Write-Output "gitToken = $env:gitToken"
+            Write-Output "gitOwner = $env:gitOwner"
 
-            git clone -b ${{parameters.branchName}} "https://user:($env:gitToken)@github.com/($env:gitOwner)/($env:gitRepoName).git" --recurse-submodules
-            # cd $env:gitRepoName
+            git clone -b ${{parameters.branchName}} "https://user:$env:gitToken@github.com/$env:gitOwner/$env:gitRepoName.git" --recurse-submodules
+            cd $env:gitRepoName
             cd docfx_project
 
             docfx.exe build .\docfx.json
 
             docfx.exe pdf .\docfx.json
+
             copy .\_site_pdf\*.pdf .\_site
 
+        displayName: 'Build DocFx site'
+
+##      - powershell: |
 ##          set-variable -name "src_dir" -value "$env:Build_SourcesDirectory\$gitRepoName"
 ##          set-variable -name "build_info_file" -value "$src_dir\docfx_project\_site\BuildInfo.txt"
 ##          new-item -path $build_info_file -itemtype file
@@ -65,7 +77,7 @@ jobs:
 ##          add-content -path $build_info_file -value "- Requested For : $env:Build_RequestedFor"
 ##          add-content -path $build_info_file -value "- Queued By     : $env:Build_QueuedBy"
 ##
-        displayName: 'Write BuildInfo.txt file'
+##        displayName: 'Write BuildInfo.txt file'
 
 
 
