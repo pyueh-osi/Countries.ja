@@ -36,6 +36,9 @@ jobs:
             Write-Output "branchName = ${{parameters.branchName}}"
             Write-Output "branchName2 = ${{parameters.branchName2}}"
             Write-Output "gitRepoName = ${{variables.gitRepoName}}"
+            Write-Output "gitRepoName = ${{gitRepoName}}"
+            Write-Output "gitRepoName = $(gitRepoName}"
+            Write-Output "gitRepoName = $env:gitRepoName"
             Write-Output "gitToken = ${{variables.gitToken}}"
 
             git clone -b ${{parameters.branchName}} https://user:${{variables.gitToken}}@github.com/${{variables.gitOwner}}/${{variables.gitRepoName}}.git --recurse-submodules
