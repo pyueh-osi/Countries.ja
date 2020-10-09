@@ -15,16 +15,10 @@ jobs:
     pool:
       # name: 00-OSIManaged-Containers
       # demands: AgentType -equals osimanagedagent
-      vmImage: 'vs2017-win2016'
+      # vmImage: 'vs2017-win2016'
+      name: CLGuild
 
     steps:
-      - script: |
-          choco install DocFX --version=2.56.2
-        displayName: 'Install DocFX 2.56.2'
-
-      - script: |
-          choco install wkhtmltopdf --version=0.12.5
-        displayName: 'Install wkhtmltopdf 0.12.5'
 
       - script: |
           echo "Executing pipeline-clguild01"
@@ -34,7 +28,7 @@ jobs:
           echo "branchName2 = ${{parameters.branchName2}}"
           echo "gitRepoName = $(gitRepoName)"
 
-          # git clone -b ${{parameters.branchName}} https://user:$(gitToken)@github.com/$(gitOwner)/$(gitRepoName).git --recurse-submodules
+          echo git clone -b ${{parameters.branchName}} https://user:$(gitToken)@github.com/$(gitOwner)/$(gitRepoName).git --recurse-submodules
 
 
       - powershell: |
