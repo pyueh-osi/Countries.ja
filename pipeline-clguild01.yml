@@ -39,7 +39,7 @@ jobs:
             Write-Output "gitToken = ($env:gitToken)"
             Write-Output "gitOwner = ($env:gitOwner)"
 
-            git clone -b ${{parameters.branchName}} https://user:($env:gitToken)@github.com/($env:gitOwner)/($env:gitRepoName).git --recurse-submodules
+            git clone -b ${{parameters.branchName}} "https://user:($env:gitToken)@github.com/($env:gitOwner)/($env:gitRepoName).git" --recurse-submodules
             # cd $env:gitRepoName
             cd docfx_project
 
