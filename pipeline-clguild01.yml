@@ -72,7 +72,7 @@ jobs:
           add-content -path $build_info_file -value "- Requested For : $env:Build_RequestedFor"
           add-content -path $build_info_file -value "- Queued By     : $env:Build_QueuedBy"
 
-       displayName: 'Write BuildInfo.txt file'
+        displayName: 'Write BuildInfo.txt file'
 
       - task: PublishBuildArtifacts@1
         inputs:
