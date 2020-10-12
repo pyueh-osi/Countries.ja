@@ -11,7 +11,7 @@ parameters:
   default: 'master'
 
 jobs:
-  - job: Publish
+  - job: Deploy to CLGuild01
     pool:
       # name: 00-OSIManaged-Containers
       # demands: AgentType -equals osimanagedagent
