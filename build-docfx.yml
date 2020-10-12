@@ -80,7 +80,7 @@ jobs:
           add-content -path $build_info_file -value "wkhtmltopdf Version:"
           wkhtmltopdf --version | out-file -Append -Encoding UTF8 -FilePath $build_info_file
 
-       displayName: 'Write BuildInfo.txt file'
+        displayName: 'Write BuildInfo.txt file'
 
       - task: PublishBuildArtifacts@1
         inputs:
