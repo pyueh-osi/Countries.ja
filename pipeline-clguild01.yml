@@ -32,28 +32,47 @@ jobs:
 
 
       - powershell: |
-            Write-Output "Executing pipeline-clguild01"
-            Write-Output "env:Build_SourcesDirectory = $env:Build_SourcesDirectory"
-            Write-Output "env:Build_SourceBranchName = $env:Build_SourceBranchName"
-            Write-Output "branchName = ${{parameters.branchName}}"
-            Write-Output "branchName2 = ${{parameters.branchName2}}"
-            Write-Output "gitRepoName = $env:gitRepoName"
-            Write-Output "gitToken = $env:gitToken"
-            Write-Output "gitOwner = $env:gitOwner"
+          Write-Output "Executing pipeline-clguild01"
+          Write-Output "env:Build_SourcesDirectory = $env:Build_SourcesDirectory"
+          Write-Output "env:Build_SourceBranchName = $env:Build_SourceBranchName"
+          Write-Output "branchName = ${{parameters.branchName}}"
+          Write-Output "branchName2 = ${{parameters.branchName2}}"
+          Write-Output "gitRepoName = $env:gitRepoName"
+          Write-Output "gitToken = $env:gitToken"
+          Write-Output "gitOwner = $env:gitOwner"
 
-            git clone -b ${{parameters.branchName}} "https://user:$env:gitToken@github.com/$env:gitOwner/$env:gitRepoName.git" --recurse-submodules
-            cd $env:gitRepoName
-            cd docfx_project
+          git clone -b ${{parameters.branchName}} "https://user:$env:gitToken@github.com/$env:gitOwner/$env:gitRepoName.git" --recurse-submodules
+          cd $env:gitRepoName
+          cd docfx_project
 
-            docfx.exe metadata .\docfx.json
+          docfx.exe metadata .\docfx.json
+          docfx.exe build .\docfx.json
+          docfx.exe pdf .\docfx.json
 
-            docfx.exe build .\docfx.json
-
-            docfx.exe pdf .\docfx.json
-
-            copy .\_site_pdf\*.pdf .\_site
+          copy .\_site_pdf\*.pdf .\_site
 
         displayName: 'Build DocFx site'
+
+      - powershell: |
+          set-variable -name "build_timestamp" -value ($(get-date -f yyyyMMdd)+"_"+$(get-date -f HHmmss))
+          set-variable -name "src_dir" -value "$env:Build_SourcesDirectory\$gitRepoName"
+          set-variable -name "build_info_file" -value "$src_dir\docfx_project\_site\BuildInfo.txt"
+          new-item -path $build_info_file -itemtype file
+         
+          add-content -path $build_info_file -value "Build Time      : $build_timestamp"
+          add-content -path $build_info_file -value "Source Repo     : $env:Build_Repository_Uri"
+          add-content -path $build_info_file -value "Branch          : $env:Build_SourceBranchName"
+          add-content -path $build_info_file -value "Last Commit     : $env:Build_SourceVersion"
+          add-content -path $build_info_file -value ""
+          add-content -path $build_info_file -value "Other Build Info:"
+          add-content -path $build_info_file -value "- Agent         : $env:Agent_MachineName"
+          add-content -path $build_info_file -value "- Name          : $env:Build_DefinitionName"
+          add-content -path $build_info_file -value "- Number        : $env:Build_BuildNumber"
+          add-content -path $build_info_file -value "- Reason        : $env:Build_Reason"
+          add-content -path $build_info_file -value "- Requested For : $env:Build_RequestedFor"
+          add-content -path $build_info_file -value "- Queued By     : $env:Build_QueuedBy"
+
+       displayName: 'Write BuildInfo.txt file'
 
       - task: PublishBuildArtifacts@1
         inputs:
@@ -61,25 +80,28 @@ jobs:
           ArtifactName: 'drop'
           publishLocation: 'Container'
 
-##      - powershell: |
-##          set-variable -name "src_dir" -value "$env:Build_SourcesDirectory\$gitRepoName"
-##          set-variable -name "build_info_file" -value "$src_dir\docfx_project\_site\BuildInfo.txt"
-##          new-item -path $build_info_file -itemtype file
-##          
-##          add-content -path $build_info_file -value "Build Time      : $build_timestamp"
-##          add-content -path $build_info_file -value "Source Repo     : $env:Build_Repository_Uri"
-##          add-content -path $build_info_file -value "Branch          : $env:Build_SourceBranchName"
-##          add-content -path $build_info_file -value "Last Commit     : $env:Build_SourceVersion"
-##          add-content -path $build_info_file -value ""
-##          add-content -path $build_info_file -value "Other Build Info:"
-##          add-content -path $build_info_file -value "- Agent         : $env:Agent_MachineName"
-##          add-content -path $build_info_file -value "- Name          : $env:Build_DefinitionName"
-##          add-content -path $build_info_file -value "- Number        : $env:Build_BuildNumber"
-##          add-content -path $build_info_file -value "- Reason        : $env:Build_Reason"
-##          add-content -path $build_info_file -value "- Requested For : $env:Build_RequestedFor"
-##          add-content -path $build_info_file -value "- Queued By     : $env:Build_QueuedBy"
-##
-##        displayName: 'Write BuildInfo.txt file'
+      - task: DownloadBuildArtifacts@0
+        inputs:
+          buildType: 'current'
+          downloadType: 'single'
+          artifactName: 'drop'
+          downloadPath: '$(System.ArtifactsDirectory)'
 
+      - task: WindowsMachineFileCopy@2
+        displayName: 'Copy files from artifact download'
+        inputs:
+          SourcePath: '$(System.ArtifactsDirectory)'
+          MachineNames: clguild01.dev.osisoft.int
+          AdminUserName: 'osi\pyueh'
+          AdminPassword: '$(adminPassword)'
+          CleanTargetBeforeCopy: true
+          TargetPath: 'd:\temp'
 
-
+      - task: ms-vscs-rm.iiswebapp.iiswebappmgmt-task.IISWebAppMgmt@3
+        displayName: 'Manage IISWebsite'
+        inputs:
+          machinesList: clguild01.dev.osisoft.int
+          AdminUserName: 'osi\pyueh'
+          AdminPassword: '$(adminPassword)'
+          WinRMProtocol: Http
+          WebsiteName: 'Default Web Site'
