@@ -90,7 +90,7 @@ jobs:
       - task: WindowsMachineFileCopy@2
         displayName: 'Copy files from artifact download to deploy path'
         inputs:
-          SourcePath: '$(System.ArtifactsDirectory)'
+          SourcePath: '$(System.ArtifactsDirectory)\drop'
           MachineNames: clguild01.dev.osisoft.int
           AdminUserName: 'osi\pyueh'
           AdminPassword: '$(adminPassword)'
