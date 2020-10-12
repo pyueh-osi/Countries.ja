@@ -12,7 +12,7 @@ parameters:
   default: 'master'
 
 jobs:
-  - job: Build DocFx
+  - job: Build_DocFx
     pool:
       # name: 00-OSIManaged-Containers
       # demands: AgentType -equals osimanagedagent
