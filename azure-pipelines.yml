@@ -12,6 +12,10 @@ parameters:
   displayName: 'Build/deploy to Azure cloud?'
   type: boolean
   default: true
+- name: deployToCLGuild01
+  displayName: 'Deploy to CLGuild01 internal publishing server?'
+  type: boolean
+  default: true
 
 variables:
   - group: product-readiness.docfx
@@ -21,9 +25,11 @@ variables:
     value: pyueh-osi
 
 jobs:
+  - template: build-docfx.yml
   - ${{ if eq(parameters.buildForAzure, true) }}:
     - template: pipeline-azure.yml
-  - ${{ if not(eq(parameters.buildForAzure, true)) }}:
+  - ${{ if eq(parameters.deployToCLGuild01, true) }}:
     - template: pipeline-clguild01.yml
       parameters:
         branchName: $(Build.SourceBranchName)
+
