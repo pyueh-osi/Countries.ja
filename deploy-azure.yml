@@ -38,7 +38,7 @@ jobs:
 
       - task: AzureCLI@2
         inputs:
-          azureSubscription: $(azureSubscription)
+          azureSubscription: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
           scriptType: 'ps'
           scriptLocation: 'inlineScript'
           inlineScript: 'az storage blob delete-batch --source "`$web" --account-name "petersandbox1" --pattern "$(deployPath)/*"'
@@ -48,7 +48,7 @@ jobs:
           SourcePath: '$(System.ArtifactsDirectory)\drop\**'
           # SourcePath: '$(Build.ArtifactStagingDirectory)\drop\**'
           # SourcePath: 'C:\source\Edgecmd-Docs\_site\**'
-          azureSubscription: $(azureSubscription)
+          azureSubscription: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
           Destination: 'AzureBlob'
           storage: $(storageAccount)
           ContainerName: '$web'
