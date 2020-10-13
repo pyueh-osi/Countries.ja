@@ -9,6 +9,18 @@ parameters:
   displayName: 'Branch to build/deploy 2'
   type: string
   default: 'master'
+- name: azureSubscription
+  displayName: 'Azure subscription name'
+  type: string
+  default: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
+- name: storageAccount
+  displayName: 'Storage account resource name'
+  type: string
+  default: 'petersandbox1'
+- name: deployPath
+  displayName: 'Deploy path (https://x.com/<dir/../dir>)'
+  type: string
+  default: 'ja/Countries'
 
 jobs:
   - job: Deploy_To_Azure
@@ -26,19 +38,19 @@ jobs:
 
       - task: AzureCLI@2
         inputs:
-          azureSubscription: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
+          azureSubscription: $(azureSubscription)
           scriptType: 'ps'
           scriptLocation: 'inlineScript'
-          inlineScript: 'az storage blob delete-batch --source "`$web" --account-name "petersandbox1" --pattern "ja/Countries/*"'
+          inlineScript: 'az storage blob delete-batch --source "`$web" --account-name "petersandbox1" --pattern "$(deployPath)/*"'
 
       - task: AzureFileCopy@4
         inputs:
           SourcePath: '$(System.ArtifactsDirectory)\drop\**'
           # SourcePath: '$(Build.ArtifactStagingDirectory)\drop\**'
           # SourcePath: 'C:\source\Edgecmd-Docs\_site\**'
-          azureSubscription: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
+          azureSubscription: $(azureSubscription)
           Destination: 'AzureBlob'
-          storage: 'petersandbox1'
+          storage: $(storageAccount)
           ContainerName: '$web'
-          BlobPrefix: 'ja/Countries'
+          BlobPrefix: '$(deployPath)'
 
