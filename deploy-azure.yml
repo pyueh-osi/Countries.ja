@@ -29,6 +29,12 @@ jobs:
       vmImage: 'vs2017-win2016'
       # name: CLGuild
     steps:
+      - script: |
+          echo "Executing job Deploy_To_Azure"
+          echo "azureSubscription = $(azureSubscription)"
+          echo "storageAccount = $(storageAccount)"
+          echo "deployPath = $(deployPath)"
+
       - task: DownloadBuildArtifacts@0
         inputs:
           buildType: 'current'
@@ -41,7 +47,7 @@ jobs:
           azureSubscription: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
           scriptType: 'ps'
           scriptLocation: 'inlineScript'
-          inlineScript: 'az storage blob delete-batch --source "`$web" --account-name "petersandbox1" --pattern "$(deployPath)/*"'
+          inlineScript: 'az storage blob delete-batch --source "`$web" --account-name "petersandbox1" --pattern "ja/Countries/*"'
 
       - task: AzureFileCopy@4
         inputs:
@@ -52,5 +58,5 @@ jobs:
           Destination: 'AzureBlob'
           storage: $(storageAccount)
           ContainerName: '$web'
-          BlobPrefix: '$(deployPath)'
+          BlobPrefix: 'ja/Countries'
 
