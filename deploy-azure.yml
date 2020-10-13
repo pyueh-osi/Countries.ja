@@ -13,6 +13,8 @@ parameters:
 jobs:
   - job: Deploy_To_Azure
     dependsOn: Build_DocFx
+    pool:
+      vmImage: 'vs2017-win2016'
     steps:
       - task: AzureCLI@2
         inputs:

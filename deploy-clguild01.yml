@@ -13,6 +13,10 @@ parameters:
 jobs:
   - job: Deploy_To_CLGuild01
     dependsOn: Build_DocFx
+    pool:
+      # name: 00-OSIManaged-Containers
+      # demands: AgentType -equals osimanagedagent
+      name: CLGuild
     steps:
       - task: DownloadBuildArtifacts@0
         inputs:
