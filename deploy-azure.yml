@@ -12,15 +12,15 @@ parameters:
 - name: azureSubscription
   displayName: 'Azure subscription name'
   type: string
-  default: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
+  # default: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
 - name: storageAccount
   displayName: 'Storage account resource name'
   type: string
-  default: 'petersandbox1'
+  # default: 'petersandbox1'
 - name: deployPath
   displayName: 'Deploy path (https://x.com/<dir/../dir>)'
   type: string
-  default: 'ja/Countries'
+  # default: 'ja/Countries'
 
 jobs:
   - job: Deploy_To_Azure
@@ -38,8 +38,9 @@ jobs:
 
       - powershell: |
           Write-Output "powershell: Executing job Deploy_To_Azure"
-          Write-Output "azureSubscription = $env:azureSubscription"
-          Write-Output "storageAccount = $env:storageAccount"
+          Write-Output "azureSubscription = ${{parameters.azureSubscription}}"
+          Write-Output "storageAccount = ${{parameters.storageAccount}}"
+          Write-Output "deployPath = ${{parameters.deployPath}}"
           Write-Output "deployPath = $env:deployPath"
           Write-Output "System.ArtifactsDirectory = $env:System_ArtifactsDirectory"
 
@@ -52,19 +53,19 @@ jobs:
 
       - task: AzureCLI@2
         inputs:
-          azureSubscription: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
+          azureSubscription: ${{parameters.azureSubscription}}
           scriptType: 'ps'
           scriptLocation: 'inlineScript'
-          inlineScript: 'az storage blob delete-batch --source "`$web" --account-name "petersandbox1" --pattern "ja/Countries/*"'
+          inlineScript: 'az storage blob delete-batch --source "`$web" --account-name "${{parameters.storageAccount}}" --pattern "${{parameters.deployPath}}/*"'
 
       - task: AzureFileCopy@4
         inputs:
           SourcePath: '$(System.ArtifactsDirectory)\drop\**'
           # SourcePath: '$(Build.ArtifactStagingDirectory)\drop\**'
           # SourcePath: 'C:\source\Edgecmd-Docs\_site\**'
-          azureSubscription: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
+          azureSubscription: ${{parameters.azureSubscription}}
           Destination: 'AzureBlob'
-          storage: $env:storageAccount
+          storage: ${{parameters.storageAccount}}
           ContainerName: '$web'
           BlobPrefix: 'ja/Countries'
 

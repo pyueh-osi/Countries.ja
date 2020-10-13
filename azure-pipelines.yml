@@ -23,6 +23,15 @@ variables:
     value: Countries.ja
   - name: gitOwner
     value: pyueh-osi
+  - name: azureSubscription
+    # displayName: 'Azure subscription name'
+    value: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
+  - name: storageAccount
+    # displayName: 'Storage account resource name'
+    value: 'petersandbox1'
+  - name: deployPath
+    # displayName: 'Deploy path (https://x.com/<dir/../dir>)'
+    value: 'ja/Countries'
 
 jobs:
   - template: build-docfx.yml
@@ -30,6 +39,10 @@ jobs:
     - template: deploy-azure.yml
       parameters:
         branchName: $(Build.SourceBranchName)
+        azureSubscription: $(azureSubscription)
+        storageAccount: $(storageAccount)
+        deployPath: $(deployPath)
+
   - ${{ if eq(parameters.deployToCLGuild01, true) }}:
     - template: deploy-clguild01.yml
       parameters:
