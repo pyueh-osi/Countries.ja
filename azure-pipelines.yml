@@ -8,8 +8,8 @@ trigger:
       - master
 
 parameters:
-- name: buildForAzure
-  displayName: 'Build/deploy to Azure cloud?'
+- name: deployToAzure
+  displayName: 'Deploy to Azure cloud?'
   type: boolean
   default: true
 - name: deployToCLGuild01
@@ -26,7 +26,7 @@ variables:
 
 jobs:
   - template: build-docfx.yml
-  - ${{ if eq(parameters.buildForAzure, true) }}:
+  - ${{ if eq(parameters.deployToAzure, true) }}:
     - template: deploy-azure.yml
       parameters:
         branchName: $(Build.SourceBranchName)
