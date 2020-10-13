@@ -13,7 +13,7 @@ parameters:
 jobs:
   - job: Deploy_To_CLGuild01
     dependsOn: Build_DocFx
-
+    steps:
       - task: DownloadBuildArtifacts@0
         inputs:
           buildType: 'current'
