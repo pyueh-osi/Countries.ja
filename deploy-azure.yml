@@ -30,10 +30,18 @@ jobs:
       # name: CLGuild
     steps:
       - script: |
-          echo "Executing job Deploy_To_Azure"
-          echo "azureSubscription = $(azureSubscription)"
-          echo "storageAccount = $(storageAccount)"
-          echo "deployPath = $(deployPath)"
+          echo "script: Executing job Deploy_To_Azure"
+          echo "azureSubscription = %azureSubscription%"
+          echo "storageAccount = %storageAccount%"
+          echo "deployPath = %deployPath%"
+          echo "Artifacts = %System_ArtifactsDirectory"
+
+      - powershell: |
+          Write-Output "powershell: Executing job Deploy_To_Azure"
+          Write-Output "azureSubscription = $env:azureSubscription"
+          Write-Output "storageAccount = $env:storageAccount"
+          Write-Output "deployPath = $env:deployPath"
+          Write-Output "System.ArtifactsDirectory = $env:System_ArtifactsDirectory"
 
       - task: DownloadBuildArtifacts@0
         inputs:
@@ -56,7 +64,7 @@ jobs:
           # SourcePath: 'C:\source\Edgecmd-Docs\_site\**'
           azureSubscription: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
           Destination: 'AzureBlob'
-          storage: $(storageAccount)
+          storage: $env:storageAccount
           ContainerName: '$web'
           BlobPrefix: 'ja/Countries'
 
