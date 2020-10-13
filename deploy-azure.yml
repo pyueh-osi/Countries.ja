@@ -25,7 +25,7 @@ jobs:
 
       - task: AzureFileCopy@4
         inputs:
-          SourcePath: '$(System.ArtifactsDirectory)\drop2'
+          SourcePath: '$(System.ArtifactsDirectory)\drop'
           # SourcePath: '$(Build.ArtifactStagingDirectory)\drop\**'
           # SourcePath: 'C:\source\Edgecmd-Docs\_site\**'
           azureSubscription: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
