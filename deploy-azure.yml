@@ -12,6 +12,7 @@ parameters:
 
 jobs:
   - job: Deploy_To_Azure
+    dependsOn: Build_DocFx
 
     steps:
 
