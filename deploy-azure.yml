@@ -13,8 +13,8 @@ parameters:
 jobs:
   - job: Deploy_To_Azure
 
-    - steps:
-    
+    steps:
+
       - task: AzureCLI@2
         inputs:
           azureSubscription: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
