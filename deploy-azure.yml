@@ -1,0 +1,33 @@
+# DevOps pipeline for CLGuild01 deployment
+
+parameters:
+- name: branchName
+  displayName: 'Branch to build/deploy'
+  type: string
+  default: 'master'
+- name: branchName2
+  displayName: 'Branch to build/deploy 2'
+  type: string
+  default: 'master'
+
+jobs:
+  - job: Deploy_To_Azure
+
+      - task: AzureCLI@2
+        inputs:
+          azureSubscription: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
+          scriptType: 'ps'
+          scriptLocation: 'inlineScript'
+          inlineScript: 'az storage blob delete-batch --source "`$web" --account-name "petersandbox1" --pattern "ja/Countries/*"'
+
+      - task: AzureFileCopy@4
+        inputs:
+          SourcePath: '$(System.ArtifactsDirectory)\drop2'
+          # SourcePath: '$(Build.ArtifactStagingDirectory)\drop\**'
+          # SourcePath: 'C:\source\Edgecmd-Docs\_site\**'
+          azureSubscription: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
+          Destination: 'AzureBlob'
+          storage: 'petersandbox1'
+          ContainerName: '$web'
+          BlobPrefix: 'ja/Countries'
+
