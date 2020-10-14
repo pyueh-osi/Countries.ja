@@ -1,0 +1,84 @@
+# DevOps pipeline for Azure deployment
+# Parameters vs variables
+#
+# All contexts: ${{parameter.param1}}
+# 
+# Powershell:
+#   $env:var1
+#
+# Task inputs:
+#   $(var1)
+#
+# Script/DOS:
+#   %var1%
+
+
+parameters:
+- name: branchName
+  displayName: 'Branch to build/deploy'
+  type: string
+  default: 'master'
+- name: branchName2
+  displayName: 'Branch to build/deploy 2'
+  type: string
+  default: 'master'
+- name: azureSubscription
+  displayName: 'Azure subscription name'
+  type: string
+- name: storageAccount
+  displayName: 'Storage account resource name'
+  type: string
+- name: deployPath
+  displayName: 'Deploy path (https://x.com/<dir/../dir>)'
+  type: string
+
+jobs:
+  - job: Deploy_To_Azure
+    dependsOn: Build_DocFx
+    pool:
+      vmImage: 'vs2017-win2016'
+      # name: CLGuild
+    steps:
+      - script: |
+          echo "script: Executing job Deploy_To_Azure"
+          echo "azureSubscription = ${{parameters.azureSubscription}}"
+          echo "storageAccount = ${{parameters.storageAccount}}"
+          echo "deployPath = ${{parameters.deployPath}}"
+          echo "deployPath = %deployPath%"
+          echo "System.ArtifactsDirectory = %System_ArtifactsDirectory"
+          echo "BranchName2 = ${{parameters.branchName2}}"
+
+      - powershell: |
+          Write-Output "powershell: Executing job Deploy_To_Azure"
+          Write-Output "azureSubscription = ${{parameters.azureSubscription}}"
+          Write-Output "storageAccount = ${{parameters.storageAccount}}"
+          Write-Output "deployPath = ${{parameters.deployPath}}"
+          Write-Output "deployPath = $env:deployPath"
+          Write-Output "System.ArtifactsDirectory = $env:System_ArtifactsDirectory"
+          Write-Output "BranchName2 = ${{parameters.branchName2}}"
+
+      - task: DownloadBuildArtifacts@0
+        inputs:
+          buildType: 'current'
+          downloadType: 'single'
+          artifactName: 'drop'
+          downloadPath: '$(System.ArtifactsDirectory)'
+
+      - task: AzureCLI@2
+        inputs:
+          azureSubscription: ${{parameters.azureSubscription}}
+          scriptType: 'ps'
+          scriptLocation: 'inlineScript'
+          inlineScript: 'az storage blob delete-batch --source "`$web" --account-name "${{parameters.storageAccount}}" --pattern "${{parameters.deployPath}}/*"'
+
+      - task: AzureFileCopy@4
+        inputs:
+          SourcePath: '$(System.ArtifactsDirectory)\drop\**'
+          # SourcePath: '$(Build.ArtifactStagingDirectory)\drop\**'
+          # SourcePath: 'C:\source\Edgecmd-Docs\_site\**'
+          azureSubscription: ${{parameters.azureSubscription}}
+          Destination: 'AzureBlob'
+          storage: ${{parameters.storageAccount}}
+          ContainerName: '$web'
+          BlobPrefix: ${{parameters.deployPath}}
+

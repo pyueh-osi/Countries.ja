@@ -1,0 +1,47 @@
+# DevOps pipeline for Azure cloud deployment
+
+# trigger: none
+#  batch: false
+#  branches:
+#    include:
+#      - master
+
+# variables:
+#   - group: product-readiness.docfx
+#   - name: gitRepoName
+#     value: Countries.ja
+#   - name: gitOwner
+#     value: pyueh-osi
+#   - name: contentLanguage
+#     value: ja
+
+jobs:
+  - job: Publish
+    pool:
+      # name: 00-OSIManaged-Containers
+      # demands: AgentType -equals osimanagedagent
+      vmImage: 'vs2017-win2016'
+    steps:
+      - powershell: |
+            Write-Output "Executing pipeline-azure"
+            Write-Output "env:Build_SourcesDirectory = $env:Build_SourcesDirectory"
+            Write-Output "env:Build_SourceBranchName = $env:Build_SourceBranchName"
+            Write-Output "env:gitRepoName = $env:gitRepoName"
+
+##          set-variable -name "src_dir" -value "$env:Build_SourcesDirectory\$gitRepoName"
+##          set-variable -name "build_info_file" -value "$src_dir\docfx_project\_site\BuildInfo.txt"
+##          new-item -path $build_info_file -itemtype file
+##          
+##          add-content -path $build_info_file -value "Build Time      : $build_timestamp"
+##          add-content -path $build_info_file -value "Source Repo     : $env:Build_Repository_Uri"
+##          add-content -path $build_info_file -value "Branch          : $env:Build_SourceBranchName"
+##          add-content -path $build_info_file -value "Last Commit     : $env:Build_SourceVersion"
+##          add-content -path $build_info_file -value ""
+##          add-content -path $build_info_file -value "Other Build Info:"
+##          add-content -path $build_info_file -value "- Agent         : $env:Agent_MachineName"
+##          add-content -path $build_info_file -value "- Name          : $env:Build_DefinitionName"
+##          add-content -path $build_info_file -value "- Number        : $env:Build_BuildNumber"
+##          add-content -path $build_info_file -value "- Reason        : $env:Build_Reason"
+##          add-content -path $build_info_file -value "- Requested For : $env:Build_RequestedFor"
+##          add-content -path $build_info_file -value "- Queued By     : $env:Build_QueuedBy"
+##

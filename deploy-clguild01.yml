@@ -1,0 +1,45 @@
+# DevOps pipeline for CLGuild01 deployment
+
+parameters:
+- name: branchName
+  displayName: 'Branch to build/deploy'
+  type: string
+  default: 'master'
+- name: branchName2
+  displayName: 'Branch to build/deploy 2'
+  type: string
+  default: 'master'
+
+jobs:
+  - job: Deploy_To_CLGuild01
+    dependsOn: Build_DocFx
+    pool:
+      # name: 00-OSIManaged-Containers
+      # demands: AgentType -equals osimanagedagent
+      name: CLGuild
+    steps:
+      - task: DownloadBuildArtifacts@0
+        inputs:
+          buildType: 'current'
+          downloadType: 'single'
+          artifactName: 'drop'
+          downloadPath: '$(System.ArtifactsDirectory)'
+
+      - task: WindowsMachineFileCopy@2
+        displayName: 'Copy files from artifact download to deploy path'
+        inputs:
+          SourcePath: '$(System.ArtifactsDirectory)\drop'
+          MachineNames: clguild01.dev.osisoft.int
+          AdminUserName: 'osi\pyueh'
+          AdminPassword: '$(adminPassword)'
+          CleanTargetBeforeCopy: true
+          TargetPath: 'C:\inetpub\wwwroot\ja\Countries'
+
+      - task: ms-vscs-rm.iiswebapp.iiswebappmgmt-task.IISWebAppMgmt@3
+        displayName: 'Manage IISWebsite'
+        inputs:
+          machinesList: clguild01.dev.osisoft.int
+          AdminUserName: 'osi\pyueh'
+          AdminPassword: '$(adminPassword)'
+          WinRMProtocol: Http
+          WebsiteName: 'Default Web Site'
