@@ -24,13 +24,10 @@ variables:
   - name: gitOwner
     value: pyueh-osi
   - name: azureSubscription
-    # displayName: 'Azure subscription name'
     value: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
   - name: storageAccount
-    # displayName: 'Storage account resource name'
     value: 'petersandbox1'
   - name: deployPath
-    # displayName: 'Deploy path (https://x.com/<dir/../dir>)'
     value: 'ja/Countries'
 
 jobs:

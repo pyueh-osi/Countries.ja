@@ -1,4 +1,17 @@
-# DevOps pipeline for CLGuild01 deployment
+# DevOps pipeline for Azure deployment
+# Parameters vs variables
+#
+# All contexts: ${{parameter.param1}}
+# 
+# Powershell:
+#   $env:var1
+#
+# Task inputs:
+#   $(var1)
+#
+# Script/DOS:
+#   %var1%
+
 
 parameters:
 - name: branchName
@@ -12,15 +25,12 @@ parameters:
 - name: azureSubscription
   displayName: 'Azure subscription name'
   type: string
-  # default: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
 - name: storageAccount
   displayName: 'Storage account resource name'
   type: string
-  # default: 'petersandbox1'
 - name: deployPath
   displayName: 'Deploy path (https://x.com/<dir/../dir>)'
   type: string
-  # default: 'ja/Countries'
 
 jobs:
   - job: Deploy_To_Azure
@@ -31,10 +41,12 @@ jobs:
     steps:
       - script: |
           echo "script: Executing job Deploy_To_Azure"
-          echo "azureSubscription = %azureSubscription%"
-          echo "storageAccount = %storageAccount%"
+          echo "azureSubscription = ${{parameters.azureSubscription}}"
+          echo "storageAccount = ${{parameters.storageAccount}}"
+          echo "deployPath = ${{parameters.deployPath}}"
           echo "deployPath = %deployPath%"
-          echo "Artifacts = %System_ArtifactsDirectory"
+          echo "System.ArtifactsDirectory = %System_ArtifactsDirectory"
+          echo "BranchName2 = ${{parameters.branchName2}}"
 
       - powershell: |
           Write-Output "powershell: Executing job Deploy_To_Azure"
@@ -43,6 +55,7 @@ jobs:
           Write-Output "deployPath = ${{parameters.deployPath}}"
           Write-Output "deployPath = $env:deployPath"
           Write-Output "System.ArtifactsDirectory = $env:System_ArtifactsDirectory"
+          Write-Output "BranchName2 = ${{parameters.branchName2}}"
 
       - task: DownloadBuildArtifacts@0
         inputs:
@@ -67,5 +80,5 @@ jobs:
           Destination: 'AzureBlob'
           storage: ${{parameters.storageAccount}}
           ContainerName: '$web'
-          BlobPrefix: 'ja/Countries'
+          BlobPrefix: ${{parameters.deployPath}}
 
